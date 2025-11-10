@@ -194,8 +194,78 @@ If this was all too easy, you could try some of the following:
 If you get really stuck, there is an answers branch you can check for one possible solution - run:  
 `git checkout answers`.
 
+## Using TypeScript Scripts (Alternative to Cast)
+
+This repository now includes TypeScript scripts that provide a developer-friendly way to interact with your contract using [ethers.js](https://docs.ethers.org/). These scripts are equivalent to the `cast` commands but provide better error handling and formatted output.
+
+### Setup
+
+1. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+2. **Make sure your `.env` file includes `CONTRACT_ADDRESS`:**
+   ```bash
+   export CONTRACT_ADDRESS=0xYourDeployedContractAddress
+   ```
+
+### Available Scripts
+
+#### Check Swap Status
+View the status of your most recent swap:
+```bash
+npm run check-status
+```
+
+This displays:
+- Request ID
+- Whether the swap has finished executing
+- Detailed swap parameters (sender, recipient, amounts, fees, etc.)
+- Timestamps
+
+#### Check Balances
+View RUSD token balances on both chains:
+```bash
+npm run check-balances
+```
+
+This shows:
+- Your contract's balance on Base Sepolia (source chain)
+- The Randamu solver's balance on Base Sepolia
+- Your contract's balance on Avalanche Fuji (destination chain)
+
+#### Execute a New Swap
+Trigger a new swap from your contract:
+```bash
+npm run execute-swap
+```
+
+**Note:** Make sure to wait 24 hours between swaps due to the faucet cooldown period, or the transaction will revert.
+
+### Benefits of TypeScript Scripts
+
+- ✅ **Better error handling** with clear, human-readable error messages
+- ✅ **Formatted output** with colors and emojis for easy reading  
+- ✅ **WebSocket support** - works with both HTTP and WebSocket RPC URLs
+- ✅ **Type safety** with TypeScript
+- ✅ **Multiple operations** in a single script
+- ✅ **Extensible** - easy to modify for your needs
+
+### Script Comparison
+
+| Cast Command | TypeScript Script | Purpose |
+|--------------|------------------|---------|
+| `cast call $CONTRACT_ADDRESS "hasFinishedExecuting()" ...` | `npm run check-status` | Check swap completion status |
+| `cast call $RUSD_ADDRESS "balanceOf(address)" ...` | `npm run check-balances` | Check token balances |
+| `cast send $CONTRACT_ADDRESS "executeSwap()" ...` | `npm run execute-swap` | Execute a new swap |
+
+For more details, see [scripts/README.md](./scripts/README.md).
+
 ## Final Thoughts
 For frontend applications, you probably want to use [the javascript client](https://github.com/randa-mu/onlyswaps-js) instead. Its functionality is analogous to much of the functionality here, so your  new knowledge should cross over!
+
+The TypeScript scripts in this repository demonstrate how to interact with OnlySwaps contracts using ethers.js, which is the foundation for building web applications with the protocol.
 
 ## Reminders to maintainer when versions update
 - update the dependency revision in the [foundry.toml](./foundry.toml)
